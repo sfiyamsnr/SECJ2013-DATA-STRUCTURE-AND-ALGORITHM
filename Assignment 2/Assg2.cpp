@@ -1,0 +1,66 @@
+// Assignment 2 - SECJ2013 - 23241 (Assg2.cpp)
+// Group Members:
+// 1. Dayang Farah Farzana binti Abang Idham (A23CS0071)
+// 2. Farra Nurzahin binti Zaharil Anuar (A23CS0079)
+// 3. Safiya Nursyahadah binti Masnoor (A23CS0176)
+
+#include <iostream> 
+#include <string>
+#include <fstream>
+#include "Student.h"
+#include "List.h"
+
+using namespace std;
+
+// main function
+int main() {
+    const int LIST_SIZE = 10;
+    string name;
+    string nameList[4] = {"Sarah", "Kevin", "Ahmed", "Cindy"};
+    int cw, fe = 0;
+    List* studList= new List();
+
+    fstream fileIn("Marks.txt", ios::in);
+
+    if (!fileIn) {
+        cout << "File input/output error!\n";
+        return 1;
+
+    } else {
+        while (fileIn >> name >> cw >> fe) {
+            Student *stud = new Student(name, cw, fe);
+            studList->insertNode(stud);
+        }
+        
+        cout << "\nList all student:\n";
+        studList->displayList();
+        cout << "\n";
+    
+    // delete student where name stored inside the nameList array
+    for (int i = 0; i < 4; i++) {
+        if (studList->findNode(nameList[i])) {
+            cout << "Found and delete student: " << nameList[i] << "\n";
+            studList->deleteNode(nameList[i]);
+            
+            } else {
+                cout << "Can't found student with name " << nameList[i] << "\n";
+            }
+        }
+
+        cout << "\nList all student:\n";
+        studList->displayList();
+        cout << "\n";
+    
+        cout << "First student: ";
+        studList->getHead()->printResult();
+        cout << "Last student: ";
+        studList->getLast()->printResult();
+        
+        fileIn.close();
+    }
+
+    delete studList;
+    system("pause");
+
+    return 0;
+}
